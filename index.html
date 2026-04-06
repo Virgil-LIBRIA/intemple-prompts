@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INTemple Prompts — Cognitive OS for AI Conversations</title>
+<meta name="description" content="Transform your AI conversations with a structured cognitive operating system. 8 specialized modules, 7 pipelines, copy-paste ready.">
+<style>
+:root {
+    --bg: #09090b;
+    --surface: #111113;
+    --surface2: #18181b;
+    --border: #27272a;
+    --text: #e4e4e7;
+    --text2: #a1a1aa;
+    --accent: #f59e0b;
+    --accent2: #d97706;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --purple: #a855f7;
+    --red: #ef4444;
+    --cyan: #06b6d4;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, -apple-system, sans-serif; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ─── NAV ─── */
+nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(9,9,11,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+nav .inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+nav .logo { font-weight: 700; font-size: 18px; letter-spacing: -0.5px; }
+nav .logo span { color: var(--accent); }
+nav .cta-nav { background: var(--accent); color: #000; padding: 8px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; transition: background 0.2s; }
+nav .cta-nav:hover { background: var(--accent2); text-decoration: none; }
+
+/* ─── HERO ─── */
+.hero { padding: 140px 24px 80px; text-align: center; max-width: 800px; margin: 0 auto; }
+.hero .badge { display: inline-block; background: rgba(245,158,11,0.12); color: var(--accent); padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-bottom: 24px; border: 1px solid rgba(245,158,11,0.2); }
+.hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+.hero h1 .highlight { background: linear-gradient(135deg, var(--accent), #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero p { font-size: 18px; color: var(--text2); max-width: 600px; margin: 0 auto 32px; }
+.hero .cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-primary { background: var(--accent); color: #000; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 16px; border: none; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); text-decoration: none; }
+.btn-secondary { background: transparent; color: var(--text); padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
+.btn-secondary:hover { border-color: var(--text2); background: var(--surface); text-decoration: none; }
+.hero .price { margin-top: 16px; font-size: 14px; color: var(--text2); }
+.hero .price strong { color: var(--accent); font-size: 20px; }
+
+/* ─── SECTIONS ─── */
+section { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
+.section-label { text-transform: uppercase; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px; }
+section h2 { font-size: clamp(28px, 3.5vw, 40px); font-weight: 700; letter-spacing: -1px; margin-bottom: 16px; }
+section .subtitle { font-size: 17px; color: var(--text2); max-width: 600px; margin-bottom: 48px; }
+
+/* ─── PROBLEM ─── */
+.problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.problem-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
+.problem-card .icon { font-size: 28px; margin-bottom: 12px; }
+.problem-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+.problem-card p { font-size: 14px; color: var(--text2); line-height: 1.5; }
+
+/* ─── MODULES ─── */
+.modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.module-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: border-color 0.2s, transform 0.2s; cursor: pointer; }
+.module-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.module-card .tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; font-family: 'Fira Code', monospace; margin-bottom: 10px; }
+.module-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.module-card p { font-size: 13px; color: var(--text2); }
+
+/* ─── DEMO ─── */
+.demo-container { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.demo-tabs { display: flex; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.demo-tab { padding: 12px 20px; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; }
+.demo-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.demo-tab:hover { color: var(--text); }
+.demo-output { padding: 24px; font-family: 'Fira Code', 'Cascadia Code', monospace; font-size: 13px; line-height: 1.7; white-space: pre-wrap; max-height: 500px; overflow-y: auto; color: #d4d4d8; }
+.demo-output .comment { color: #6b7280; }
+.demo-output .keyword { color: var(--accent); font-weight: 600; }
+.demo-output .module { color: var(--cyan); }
+.demo-output .score { color: var(--green); }
+.demo-output .heading { color: #e4e4e7; font-weight: 700; }
+.demo-output .separator { color: #374151; }
+
+/* ─── PIPELINE ─── */
+.pipeline-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+.pipeline-step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; text-align: center; min-width: 140px; }
+.pipeline-step .step-num { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
+.pipeline-step .step-name { font-size: 15px; font-weight: 700; color: var(--cyan); }
+.pipeline-step .step-desc { font-size: 12px; color: var(--text2); margin-top: 4px; }
+.pipeline-arrow { font-size: 20px; color: var(--border); padding: 0 4px; }
+
+/* ─── INCLUDES ─── */
+.includes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.include-item { display: flex; gap: 16px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+.include-item .check { color: var(--green); font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.include-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.include-item p { font-size: 13px; color: var(--text2); }
+
+/* ─── TESTIMONIAL / SOCIAL PROOF ─── */
+.proof { text-align: center; padding: 60px 24px; }
+.proof-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.proof-stat .num { font-size: 40px; font-weight: 800; color: var(--accent); }
+.proof-stat .label { font-size: 14px; color: var(--text2); }
+
+/* ─── FAQ ─── */
+.faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+.faq-q { font-weight: 600; font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.faq-q::after { content: '+'; font-size: 20px; color: var(--text2); transition: transform 0.2s; }
+.faq-item.open .faq-q::after { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s; font-size: 14px; color: var(--text2); line-height: 1.6; }
+.faq-item.open .faq-a { max-height: 200px; padding-top: 12px; }
+
+/* ─── CTA FINAL ─── */
+.cta-final { text-align: center; padding: 80px 24px; background: linear-gradient(180deg, transparent, rgba(245,158,11,0.04)); }
+.cta-final h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin-bottom: 16px; }
+.cta-final p { font-size: 17px; color: var(--text2); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+/* ─── FOOTER ─── */
+footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--border); font-size: 13px; color: #52525b; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+    .pipeline-arrow { display: none; }
+    .pipeline-flow { gap: 10px; }
+    .proof-stats { gap: 24px; }
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="inner">
+        <div class="logo">IN<span>Temple</span> Prompts</div>
+        <a href="https://creativeflow7.gumroad.com/l/kaqiqx" target="_blank" class="cta-nav">Obtenir le pack &rarr;</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="badge">Prompt Engineering Framework</div>
+    <h1>Installe un <span class="highlight">OS cognitif</span> dans tes conversations IA</h1>
+    <p>8 modules specialises. 7 pipelines. Copy-paste dans n'importe quel chat LLM. Fini les prompts improvises.</p>
+    <div class="cta-group">
+        <a href="https://creativeflow7.gumroad.com/l/kaqiqx" target="_blank" class="btn-primary">Obtenir le pack &rarr;</a>
+        <a href="#demo" class="btn-secondary">Voir la demo</a>
+    </div>
+    <div class="price">A partir de <strong>29 EUR</strong> &middot; Acces a vie &middot; Mises a jour incluses</div>
+</div>
+
+<!-- PROBLEM -->
+<section>
+    <div class="section-label">Le probleme</div>
+    <h2>Tes conversations IA sont chaotiques</h2>
+    <p class="subtitle">Tu passes plus de temps a reformuler tes prompts qu'a utiliser les reponses.</p>
+    <div class="problem-grid">
+        <div class="problem-card">
+            <div class="icon">&#128104;&#8205;&#128187;</div>
+            <h3>Prompts improvises</h3>
+            <p>Chaque conversation repart de zero. Pas de structure, pas de methode, pas de consistance. Tu reinventes la roue a chaque session.</p>
+        </div>
+        <div class="problem-card">
+            <div class="icon">&#127754;</div>
+            <h3>Derive informationnelle</h3>
+            <p>L'IA genere du contenu en boucle sans direction. Tu te noies dans les details et perds la vision d'ensemble.</p>
+        </div>
+        <div class="problem-card">
+            <div class="icon">&#9888;&#65039;</div>
+            <h3>Pas de memoire structuree</h3>
+            <p>Apres 10 echanges, le contexte est perdu. Tu repetes les memes instructions. La conversation perd en qualite.</p>
+        </div>
+    </div>
+</section>
+
+<!-- SOLUTION -->
+<section>
+    <div class="section-label">La solution</div>
+    <h2>Un framework qui structure tes sessions</h2>
+    <p class="subtitle">INTemple transforme chaque chat en systeme modulaire avec des roles specialises et une memoire organisee.</p>
+
+    <div class="modules-grid">
+        <div class="module-card" onclick="showDemo('daisy')">
+            <div class="tag" style="background:rgba(168,85,247,0.15);color:#a855f7;">#DAISY</div>
+            <h3>Generateur creatif</h3>
+            <p>Brainstorming divergent. 8+ variantes, analogies cross-domaines, anti-patterns eclairants.</p>
+        </div>
+        <div class="module-card" onclick="showDemo('dayz')">
+            <div class="tag" style="background:rgba(59,130,246,0.15);color:#3b82f6;">#DAYZ</div>
+            <h3>Analyseur structurel</h3>
+            <p>Decomposition hierarchique. Composants, relations, invariants, anomalies.</p>
+        </div>
+        <div class="module-card" onclick="showDemo('keyz')">
+            <div class="tag" style="background:rgba(245,158,11,0.15);color:#f59e0b;">#KEYZ</div>
+            <h3>Triageur / Scoring</h3>
+            <p>Priorisation multi-critere. Urgence, impact, effort, risque. Scores de 0 a 1.</p>
+        </div>
+        <div class="module-card" onclick="showDemo('e3')">
+            <div class="tag" style="background:rgba(34,197,94,0.15);color:#22c55e;">#E3</div>
+            <h3>Expanseur 3 axes</h3>
+            <p>Horizontal (analogies), Vertical (abstraction), Radial (connexions inattendues).</p>
+        </div>
+        <div class="module-card" onclick="showDemo('temple')">
+            <div class="tag" style="background:rgba(239,68,68,0.15);color:#ef4444;">#TEMPLE</div>
+            <h3>Validateur</h3>
+            <p>Coherence, contradictions, completude. Verdict : VALIDE / PARTIEL / INVALIDE.</p>
+        </div>
+        <div class="module-card" onclick="showDemo('ndim')">
+            <div class="tag" style="background:rgba(6,182,212,0.15);color:#06b6d4;">#NDIM</div>
+            <h3>Encodeur multi-axe</h3>
+            <p>Projection sur 5 dimensions qualitatives : temporel, conceptuel, relationnel, transcendant, contra-forme.</p>
+        </div>
+        <div class="module-card" onclick="showDemo('mem')">
+            <div class="tag" style="background:rgba(161,161,170,0.15);color:#a1a1aa;">#MEM</div>
+            <h3>Memoire 3 niveaux</h3>
+            <p>Ecume (volatile), Creux (session), Ocean (permanent). Anti-perte de contexte.</p>
+        </div>
+        <div class="module-card" onclick="showDemo('hop')">
+            <div class="tag" style="background:rgba(251,191,36,0.15);color:#fbbf24;">#HOP</div>
+            <h3>Orchestrateur</h3>
+            <p>Route automatiquement vers le bon module. Planifie les pipelines.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PIPELINE -->
+<section>
+    <div class="section-label">Pipelines</div>
+    <h2>7 workflows pre-configures</h2>
+    <p class="subtitle">Chaine les modules en sequence. Un seul copy-paste lance tout le pipeline.</p>
+
+    <div class="pipeline-flow">
+        <div class="pipeline-step">
+            <div class="step-num">Etape 1</div>
+            <div class="step-name">#DAISY</div>
+            <div class="step-desc">Generation</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-step">
+            <div class="step-num">Etape 2</div>
+            <div class="step-name">#DAYZ</div>
+            <div class="step-desc">Structure</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-step">
+            <div class="step-num">Etape 3</div>
+            <div class="step-name">#KEYZ</div>
+            <div class="step-desc">Triage</div>
+        </div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-step">
+            <div class="step-num">Etape 4</div>
+            <div class="step-name">#TEMPLE</div>
+            <div class="step-desc">Validation</div>
+        </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;text-align:center;">
+        <div style="padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
+            <div style="color:var(--accent);font-weight:700;">#PIPE create</div>
+            <div style="font-size:12px;color:var(--text2);">Creer un concept</div>
+        </div>
+        <div style="padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
+            <div style="color:var(--accent);font-weight:700;">#PIPE analyze</div>
+            <div style="font-size:12px;color:var(--text2);">Analyser en profondeur</div>
+        </div>
+        <div style="padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
+            <div style="color:var(--accent);font-weight:700;">#PIPE expand</div>
+            <div style="font-size:12px;color:var(--text2);">Enrichir un concept</div>
+        </div>
+        <div style="padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
+            <div style="color:var(--accent);font-weight:700;">#PIPE explore</div>
+            <div style="font-size:12px;color:var(--text2);">Exploration ouverte</div>
+        </div>
+        <div style="padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
+            <div style="color:var(--accent);font-weight:700;">#PIPE write</div>
+            <div style="font-size:12px;color:var(--text2);">Rediger un texte</div>
+        </div>
+        <div style="padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
+            <div style="color:var(--accent);font-weight:700;">#PIPE consolidate</div>
+            <div style="font-size:12px;color:var(--text2);">Fusionner des sources</div>
+        </div>
+        <div style="padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
+            <div style="color:var(--accent);font-weight:700;">#PIPE prioritize</div>
+            <div style="font-size:12px;color:var(--text2);">Classer par priorite</div>
+        </div>
+    </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo">
+    <div class="section-label">Demo interactive</div>
+    <h2>Essaie maintenant</h2>
+    <p class="subtitle">Clique sur un module pour voir le prompt genere. Copy-paste dans ton chat.</p>
+
+    <div class="demo-container">
+        <div class="demo-tabs">
+            <div class="demo-tab active" onclick="showDemo('system')">System Prompt</div>
+            <div class="demo-tab" onclick="showDemo('daisy')">DAISY</div>
+            <div class="demo-tab" onclick="showDemo('dayz')">DAYZ</div>
+            <div class="demo-tab" onclick="showDemo('keyz')">KEYZ</div>
+            <div class="demo-tab" onclick="showDemo('pipeline')">Pipeline</div>
+            <div class="demo-tab" onclick="showDemo('memory')">Memoire</div>
+        </div>
+        <div class="demo-output" id="demo-output"></div>
+    </div>
+    <div style="text-align:center;margin-top:16px;">
+        <button onclick="copyDemo()" class="btn-secondary" id="copy-btn" style="font-size:14px;padding:10px 24px;">Copier le prompt</button>
+    </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<div class="proof">
+    <div class="proof-stats">
+        <div class="proof-stat">
+            <div class="num">8</div>
+            <div class="label">Modules specialises</div>
+        </div>
+        <div class="proof-stat">
+            <div class="num">7</div>
+            <div class="label">Pipelines pre-configures</div>
+        </div>
+        <div class="proof-stat">
+            <div class="num">5</div>
+            <div class="label">Sessions-types</div>
+        </div>
+        <div class="proof-stat">
+            <div class="num">24</div>
+            <div class="label">Fichiers prets a l'emploi</div>
+        </div>
+    </div>
+</div>
+
+<!-- INCLUDES -->
+<section id="buy">
+    <div class="section-label">Le pack complet</div>
+    <h2>Tout ce que tu recois</h2>
+    <p class="subtitle">Fichiers Markdown + JSON, prets a copier-coller dans Claude, GPT, Gemini, Mistral ou n'importe quel LLM.</p>
+
+    <div class="includes-grid">
+        <div class="include-item">
+            <div class="check">&#10003;</div>
+            <div><h4>System Prompt complet + compact</h4><p>2 versions : 700 mots (full) et 170 mots (compact pour les petits contextes). Installe l'OS en un copy-paste.</p></div>
+        </div>
+        <div class="include-item">
+            <div class="check">&#10003;</div>
+            <div><h4>8 modules individuels</h4><p>Chaque module avec prompt d'activation, exemple d'input et output attendu. Utilisables independamment.</p></div>
+        </div>
+        <div class="include-item">
+            <div class="check">&#10003;</div>
+            <div><h4>7 pipelines sequentiels</h4><p>Create, Analyze, Expand, Explore, Write, Consolidate, Prioritize. Un prompt = un workflow complet.</p></div>
+        </div>
+        <div class="include-item">
+            <div class="check">&#10003;</div>
+            <div><h4>5 sessions-types</h4><p>Exploration, redaction, structuration, consolidation, debug. Avec opener + follow-ups suggerees.</p></div>
+        </div>
+        <div class="include-item">
+            <div class="check">&#10003;</div>
+            <div><h4>Cheatsheet reference</h4><p>Toutes les balises, pipelines et commandes sur une seule page. Imprimable.</p></div>
+        </div>
+        <div class="include-item">
+            <div class="check">&#10003;</div>
+            <div><h4>Export JSON structure</h4><p>Donnees brutes pour integration dans vos propres outils, scripts ou interfaces.</p></div>
+        </div>
+    </div>
+
+    <!-- PRICING -->
+    <div style="max-width:480px;margin:48px auto 0;text-align:center;background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:40px 32px;">
+        <div style="font-size:14px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">INTemple Prompts</div>
+        <div style="font-size:48px;font-weight:800;margin-bottom:4px;">29 <span style="font-size:20px;color:var(--text2);">EUR</span></div>
+        <div style="font-size:14px;color:var(--text2);margin-bottom:24px;">Paiement unique &middot; Acces a vie &middot; Mises a jour</div>
+        <a href="https://creativeflow7.gumroad.com/l/kaqiqx" target="_blank" class="btn-primary" style="width:100%;justify-content:center;font-size:18px;padding:16px;" id="buy-btn">
+            Obtenir le pack &rarr;
+        </a>
+        <div style="margin-top:16px;font-size:12px;color:#52525b;">Compatible Claude, GPT, Gemini, Mistral, Ollama, LM Studio</div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section>
+    <div class="section-label">Questions</div>
+    <h2>FAQ</h2>
+    <div style="max-width:700px;">
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Ca marche avec quel LLM ?</div>
+            <div class="faq-a">Tous. Les prompts sont du texte brut en Markdown. Claude, GPT-4, Gemini, Mistral, Ollama, LM Studio, n'importe quel chat qui accepte un system prompt ou un message texte.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est quoi la difference avec un simple prompt ?</div>
+            <div class="faq-a">Un prompt est une instruction isolee. INTemple est un systeme complet : modules specialises, memoire structuree, pipelines sequentiels, commandes de controle. C'est la difference entre taper une commande dans le terminal et utiliser un OS.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je dois etre technique pour l'utiliser ?</div>
+            <div class="faq-a">Non. C'est du copy-paste. Tu colles le system prompt, puis tu utilises les balises (#DAISY, #PIPE create, etc.) dans tes messages. Si tu sais ecrire dans un chat, tu sais utiliser INTemple.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Combien de fichiers je recois ?</div>
+            <div class="faq-a">24 fichiers Markdown + 1 export JSON. Organises par categorie : system prompts, modules, pipelines, sessions, cheatsheet. Plus un JSON structure pour integration programmatique.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Y a-t-il des mises a jour ?</div>
+            <div class="faq-a">Oui. L'achat inclut toutes les mises a jour futures. Nouveaux modules, nouveaux pipelines, optimisations basees sur les retours utilisateurs.</div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-final">
+    <h2>Arrete d'improviser tes prompts</h2>
+    <p>Installe un OS cognitif dans ton chat IA. Une seule fois. Pour toutes tes conversations.</p>
+    <a href="https://creativeflow7.gumroad.com/l/kaqiqx" target="_blank" class="btn-primary" style="font-size:18px;padding:16px 40px;">Obtenir INTemple Prompts &rarr;</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>INTemple Prompts &copy; 2026 VISION &middot; Produit digital &middot; Tous droits reserves</p>
+</footer>
+
+<script>
+const DEMOS = {
+    system: {
+        title: "System Prompt (version compacte)",
+        content: `<span class="heading"># INTemple OS — Mode Compact</span>
+
+Tu es INTemple, un OS cognitif modulaire avec 8 modules activables par balises :
+
+<span class="module">- #DAISY</span> : Mode creatif (variantes, analogies, brainstorm). Abondant, sans filtre.
+<span class="module">- #DAYZ</span>  : Mode analytique (decomposition, hierarchie, schema). Strict, structure.
+<span class="module">- #KEYZ</span>  : Mode triage (scoring 0-1, priorite, filtrage). Toujours chiffrer.
+<span class="module">- #E3</span>    : Mode expansion (horizontal, vertical, radial).
+<span class="module">- #TEMPLE</span>: Mode validation (coherence, contradictions). VALIDE/INVALIDE.
+<span class="module">- #NDIM</span>  : Mode multi-axe (5 dimensions qualitatives).
+<span class="module">- #MEM</span>   : Mode memoire (classer en [E]cume/[C]reux/[O]cean).
+<span class="module">- #HOP</span>   : Mode orchestrateur (router vers le bon module).
+
+<span class="keyword">Pipelines</span> : #PIPE create|analyze|expand|prioritize|consolidate|explore|write
+Chaque pipeline chaine les modules en sequence.
+
+<span class="keyword">Regles</span> :
+1. Nomme le module actif : [DAISY], [DAYZ], etc.
+2. En pipeline, marque : <span class="separator">--- Etape N: MODULE ---</span>
+3. Tous les 3-4 echanges : bloc ---MEMOIRE--- avec [O]/[C]/[E]
+4. Si derive entropique : signaler <span class="keyword">[!DIABOLE]</span>
+5. Sans balise : utilise #HOP pour router automatiquement.`
+    },
+    daisy: {
+        title: "Module DAISY — Generateur creatif",
+        content: `<span class="module">#DAISY</span>
+
+Active le mode creatif divergent. Pour le sujet que je vais te donner :
+
+1. Genere au minimum <span class="keyword">8 variantes/reformulations</span> STRUCTURELLEMENT differentes
+2. Inclus au moins <span class="keyword">3 analogies</span> provenant d'autres domaines
+   (biologie, physique, musique, architecture, cuisine, sport...)
+3. Propose 2 <span class="keyword">"anti-patterns"</span> — des approches volontairement mauvaises
+   qui eclairent ce qui est important par contraste
+4. Pour chaque variante : note d'originalite <span class="score">(0-10)</span> et de faisabilite <span class="score">(0-10)</span>
+5. Termine par une synthese des 2-3 pistes les plus prometteuses
+
+Style : libre, associatif, abondant. NE PAS filtrer.
+Quantite > qualite a ce stade.
+
+<span class="separator">────────────────────────────────────────</span>
+<span class="comment">Exemple d'utilisation :</span>
+<span class="comment">Toi: #DAISY Comment restructurer mon equipe produit ?</span>
+<span class="comment">IA: [DAISY] 8 variantes generees :</span>
+<span class="comment">    1. Modele Essaim — equipes autonomes sans manager...</span>
+<span class="comment">    2. Modele Orchestre — un chef, des sections specialis...</span>`
+    },
+    dayz: {
+        title: "Module DAYZ — Analyseur structurel",
+        content: `<span class="module">#DAYZ</span>
+
+Active le mode analytique structurel. Pour le sujet fourni :
+
+1. <span class="keyword">DECOMPOSITION</span> : Identifie les composants atomiques (max 7 +/- 2)
+   Pour chaque : nom, role, dependances
+2. <span class="keyword">HIERARCHIE</span> : Organise en arbre (niveaux d'abstraction)
+3. <span class="keyword">RELATIONS</span> : Cartographie les liens entre composants
+   Types : dependance, opposition, equivalence, complementarite
+4. <span class="keyword">INVARIANTS</span> : Proprietes qui doivent TOUJOURS etre vraies
+   Formule-les comme des assertions testables
+5. <span class="keyword">ANOMALIES</span> : Contradictions, lacunes, presupposes non-explicites
+
+Style : systematique, precis, sans interpretation.
+Structure > prose. Utilise des listes, tableaux, schemas ASCII.
+
+<span class="separator">────────────────────────────────────────</span>
+<span class="comment">Exemple de sortie :</span>
+<span class="comment">[DAYZ] Decomposition structurelle :</span>
+<span class="comment">Composants atomiques :</span>
+<span class="comment">  1. Module Auth (prerequis) — gestion des identites</span>
+<span class="comment">  2. Module Data — persistance et cache</span>
+<span class="comment">  3. Module API — interface externe</span>
+<span class="comment">Invariant : auth.valid() => data.accessible()</span>`
+    },
+    keyz: {
+        title: "Module KEYZ — Triageur / Scoring",
+        content: `<span class="module">#KEYZ</span>
+
+Active le mode triage et scoring. Pour les elements fournis :
+
+1. <span class="keyword">SCORING</span> : Pour chaque element, attribue :
+   - Urgence    <span class="score">(0.0 - 1.0)</span> — fenetre temporelle d'action
+   - Impact     <span class="score">(0.0 - 1.0)</span> — effet sur le systeme global
+   - Effort     <span class="score">(0.0 - 1.0)</span> — cout de mise en oeuvre (1.0 = enorme)
+   - Risque     <span class="score">(0.0 - 1.0)</span> — probabilite d'echec
+   - COMPOSITE  = Urgence*0.3 + Impact*0.3 + (1-Effort)*0.2 + (1-Risque)*0.2
+
+2. <span class="keyword">CLASSEMENT</span> : Ordonne par score composite decroissant
+
+3. <span class="keyword">SEUILS</span> :
+   - <span class="keyword">CRITIQUE</span> (> 0.85) : action immediate
+   - <span class="keyword">HAUT</span>     (0.65 - 0.85) : a planifier
+   - MOYEN    (0.40 - 0.65) : quand possible
+   - BAS      (< 0.40) : backlog
+
+4. <span class="keyword">VERDICT</span> : Top-3 actions a lancer. PAS de "ca depend".`
+    },
+    pipeline: {
+        title: "Pipeline CREATE (exemple)",
+        content: `<span class="module">#PIPE create</span>
+
+Je vais te donner un sujet. Traite-le en 4 etapes :
+
+<span class="separator">--- Etape 1 : DAISY (Generation) ---</span>
+Genere 5+ variantes, reformulations, perspectives.
+Sans filtre. Abondance maximale.
+
+<span class="separator">--- Etape 2 : DAYZ (Structuration) ---</span>
+Prends les variantes de l'etape 1 et :
+- Categories naturelles
+- Redondances eliminees
+- Invariants extraits
+
+<span class="separator">--- Etape 3 : KEYZ (Triage) ---</span>
+Score chaque element : pertinence / originalite / faisabilite <span class="score">(0-1)</span>
+Garde le top-3.
+
+<span class="separator">--- Etape 4 : TEMPLE (Validation) ---</span>
+Pour le top-3, verifie coherence.
+VERDICT : <span class="keyword">VALIDE</span> / <span class="keyword">PARTIEL</span> / <span class="keyword">INVALIDE</span> pour chacun.
+
+Output final : le meilleur candidat avec justification.
+
+Mon sujet : <span class="keyword">[VOTRE SUJET ICI]</span>`
+    },
+    memory: {
+        title: "Systeme de Memoire Cinetique",
+        content: `<span class="module">#MEM</span>
+
+Tu geres 3 niveaux de memoire pendant la conversation :
+
+<span class="keyword">[O] OCEAN</span> — Fond permanent (max 10 elements)
+    Definitions validees, axiomes, decisions irreversibles.
+    Ce qui ne changera pas meme dans 100 echanges.
+
+<span class="keyword">[C] CREUX</span> — Profondeur de session (max 15 elements)
+    Decisions prises, resultats valides, structure retenue.
+    Pertinent pour cette session mais pas fondamental.
+
+<span class="keyword">[E] ECUME</span> — Surface volatile (illimite)
+    Brouillons, variantes rejetees, details temporaires.
+    Peut etre oublie au prochain echange.
+
+<span class="separator">────────────────────────────────────────</span>
+<span class="comment">Exemple de sortie :</span>
+
+<span class="heading">---MEMOIRE---</span>
+<span class="keyword">[O]</span> L'architecture a 3 couches : API / Business / Data
+<span class="keyword">[O]</span> Le deploiement est sur Kubernetes
+
+<span class="keyword">[C]</span> On a decide d'utiliser PostgreSQL (pas MongoDB)
+<span class="keyword">[C]</span> Le module Auth est critique — le faire en premier
+
+<span class="keyword">[E]</span> Discussion sur le nom du projet (pas tranche)
+<span class="keyword">[E]</span> Hesitation entre REST et GraphQL
+<span class="heading">---FIN MEMOIRE---</span>`
+    },
+    e3: {
+        title: "Module E3 — Expanseur tri-directionnel",
+        content: `<span class="module">#E3</span>
+
+Active le mode expansion tri-directionnelle. Pour le concept fourni :
+
+<span class="keyword">HORIZONTAL</span> (analogies inter-domaines) :
+- 3+ analogies dans des domaines differents
+- Pour chaque : structure commune identifiee
+
+<span class="keyword">VERTICAL</span> :
+- HAUT : 2 niveaux d'abstraction au-dessus
+- BAS : 2 niveaux de concretisation en-dessous
+- Identifier les sauts qualitatifs entre niveaux
+
+<span class="keyword">RADIAL</span> (connexions laterales inattendues) :
+- 3+ concepts apparemment non-relies mais structurellement proches
+- Justifier chaque connexion
+
+Style : exploratoire, multi-axe, surprenant.
+Cherche les connexions <span class="keyword">NON-EVIDENTES</span>.`
+    },
+    temple: {
+        title: "Module TEMPLE — Validateur de coherence",
+        content: `<span class="module">#TEMPLE</span>
+
+Active le mode validation. Pour le contenu fourni :
+
+1. <span class="keyword">COHERENCE INTERNE</span> : Elements compatibles ?
+   - Contradictions explicites / implicites
+   - Tensions productives (pas des erreurs)
+
+2. <span class="keyword">COMPLETUDE</span> : Composants manquants ?
+   - Presupposes non-definis
+   - Cas non-couverts
+
+3. <span class="keyword">SOLIDITE</span> : Connexions justifiees ?
+   - Liens forts (logiquement fondes)
+   - Liens faibles (analogiques)
+   - Liens fallacieux (correlation != causalite)
+
+4. <span class="keyword">VERDICT</span> :
+   <span class="score">VALIDE</span>   : aucune contradiction, complet, solide
+   <span class="keyword">PARTIEL</span>  : coherent mais incomplet
+   <span class="keyword">INVALIDE</span> : contradictions bloquantes
+   Score : <span class="score">0.0</span> (chaos) a <span class="score">1.0</span> (cristal)`
+    },
+    ndim: {
+        title: "Module NDIM — Encodeur multi-axe",
+        content: `<span class="module">#NDIM</span>
+
+Projette le concept dans 5 dimensions qualitatives :
+
+| Axe           | Question                     | Echelle                     |
+|---------------|------------------------------|-----------------------------|
+| <span class="keyword">TEMPOREL</span>      | Comment evolue-t-il ?        | statique -> emergent        |
+| <span class="keyword">CONCEPTUEL</span>    | Noyau irreductible ?         | atomique -> systeme         |
+| <span class="keyword">RELATIONNEL</span>   | Combien de connexions ?      | isole -> nexus              |
+| <span class="keyword">TRANSCENDANT</span>  | Isomorphismes ?              | specifique -> universel     |
+| <span class="keyword">CONTRA-FORME</span>  | Ce qu'il N'EST PAS ?         | enumerer 3-5 exclusions     |
+
+Output :
+<span class="score">VECTEUR: [temporel, conceptuel, relationnel, transcendant, contra-forme]</span>
+<span class="score">TORSION: 0.X</span> (complexite interne)
+<span class="score">COHERENCE: 0.X</span>`
+    },
+    hop: {
+        title: "Module HOP — Orchestrateur",
+        content: `<span class="module">#HOP</span>
+
+Analyse la demande et decide :
+
+1. <span class="keyword">INTENTION</span> : Que veut l'utilisateur ?
+   (explorer, analyser, creer, structurer, prioriser, valider)
+
+2. <span class="keyword">ROUTAGE</span> : Quel module ou pipeline est le plus adapte ?
+   Justifie en 1 phrase.
+
+3. <span class="keyword">PLAN</span> : 2-4 etapes avec module responsable de chacune.
+
+4. <span class="keyword">RISQUES</span> : Risque principal
+   (derive, surcharge, hors-sujet, <span class="keyword">[!DIABOLE]</span>)
+
+NE PAS executer — juste planifier.
+Attendre confirmation avant de lancer.
+
+<span class="separator">────────────────────────────────────────</span>
+<span class="comment">Exemple :</span>
+<span class="comment">[HOP] INTENTION: Explorer les liens entre A et B</span>
+<span class="comment">ROUTAGE: Pipeline #PIPE explore</span>
+<span class="comment">PLAN: 1.[DAISY] hypotheses -> 2.[E3] expansion</span>
+<span class="comment">      -> 3.[NDIM] projection -> 4.[KEYZ] scoring</span>
+<span class="comment">Lancer ? (oui / modifier)</span>`
+    },
+    mem: {
+        title: "Module MEM — Memoire Cinetique",
+        content: `<span class="module">#MEM</span>
+
+Classe les informations en 3 niveaux :
+
+<span class="keyword">[O] OCEAN</span> — Fond permanent (max 10)
+    Definitions, axiomes, decisions irreversibles.
+
+<span class="keyword">[C] CREUX</span> — Profondeur session (max 15)
+    Resultats valides, structure retenue.
+
+<span class="keyword">[E] ECUME</span> — Surface volatile (illimite)
+    Brouillons, temporaire, jetable.
+
+Regle : si [O] depasse 10 elements, forcer un triage.
+Si contexte > 3000 tokens sans point memoire :
+   signaler <span class="keyword">[!MEM OVERFLOW]</span>
+
+<span class="heading">---MEMOIRE---</span>
+<span class="keyword">[O]</span> ...
+<span class="keyword">[C]</span> ...
+<span class="keyword">[E]</span> ...
+<span class="heading">---FIN MEMOIRE---</span>`
+    }
+};
+
+let currentDemo = 'system';
+
+function showDemo(name) {
+    currentDemo = name;
+    const demo = DEMOS[name];
+    if (!demo) return;
+    document.getElementById('demo-output').innerHTML = demo.content;
+    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.demo-tab').forEach(t => {
+        if (t.textContent.toLowerCase().replace(/\s/g,'') === name.toLowerCase() ||
+            (name === 'system' && t.textContent.includes('System')) ||
+            (name === 'pipeline' && t.textContent.includes('Pipeline')) ||
+            (name === 'memory' && t.textContent.includes('Memoire'))) {
+            t.classList.add('active');
+        }
+    });
+}
+
+function copyDemo() {
+    const text = document.getElementById('demo-output').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copie !';
+        setTimeout(() => btn.textContent = 'Copier le prompt', 2000);
+    });
+}
+
+// Init
+showDemo('system');
+</script>
+</body>
+</html>
